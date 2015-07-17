@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="useColumnLabel" value="false" />
+	</settings>
+	<typeAliases>
+		<typeAlias alias="UpperCaseMap"
+			type="com.teradata.common.collection.UpperCaseMap" />
+		<typeAlias alias="LowerCaseMap"
+			type="com.teradata.common.collection.LowerCaseMap" />
+	</typeAliases>
+	<!----><environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="com.ncr.teradata.TeraDriver" />
+				<property name="url"
+					value="jdbc:teradata://10.248.15.15/CLIENT_CHARSET=cp936,TMODE=TERA,CHARSET=ASCII,DATABASE=DWPPARA" />
+				<property name="username" value="dwap" />
+				<property name="password" value="Xtj23i1tpyT" />
+                <property name="poolMaximumActiveConnections" value="20" />
+                <property name="poolMaximumIdleConnections" value="10" />
+			</dataSource>
+		</environment>
+	</environments>
+
+    <!--<environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC" />
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver" />
+                <property name="url"
+                          value="jdbc:mysql://localhost:3307/dwttemp" />
+                <property name="username" value="root" />
+                <property name="password" value="Liusp2014" />
+                <property name="poolMaximumActiveConnections" value="100" />
+                <property name="poolMaximumIdleConnections" value="50" />
+            </dataSource>
+        </environment>
+    </environments>-->
+	<mappers>
+		<mapper resource="config/mybatis/sqlmaps/application_sql.xml" />
+		<mapper resource="config/mybatis/sqlmaps/kpi_sql.xml" />
+		<mapper resource="config/mybatis/sqlmaps/kpi_value_sql.xml" />
+		<mapper resource="config/mybatis/sqlmaps/log_sql.xml" />
+        <mapper resource="config/mybatis/sqlmaps/comment.xml" />
+    </mappers>
+
+</configuration>

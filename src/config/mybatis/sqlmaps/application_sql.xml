@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="APP">
+    <select id="selectUserByIdPassword" resultType="com.teradata.bean.User.User">
+        SELECT
+            MSISDN,
+            IMEI,
+            PASSWD,
+            OS_TYP
+        FROM
+            DWPPARA.DSSLOGON
+        WHERE
+            MSISDN=#{USER_NAME}
+        AND
+            PASSWD=#{PASSWORD}
+    </select>
+    <select id="selectUserById" resultType="com.teradata.bean.User.User">
+        SELECT
+            MSISDN,
+            IMEI,
+            PASSWD,
+            OS_TYP
+        FROM
+            DWPPARA.DSSLOGON
+        WHERE
+            MSISDN=#{USER_NAME}
+    </select>
+    <select id="selectAllVersion" resultType="UpperCaseMap">
+		SELECT VERSION,
+		       CLIENT_TYPE,
+		       CHANGE_LOG,
+		       UPDATE_URL,
+		       MAX_MAND_VERSION,
+		       UPDATE_TYPE
+		FROM   (SELECT TOP 1 V.VERSION,
+		                     V.CLIENT_TYPE,
+		                     V.CHANGE_LOG,
+		                     V.UPDATE_URL,
+		                     V2.MAX_MAND_VERSION,
+		                     V.UPDATE_TYPE
+		        FROM   DWTTEMP.KPI_MBL_BI_M_VERSION V
+		               LEFT JOIN (SELECT Max(VERSION) AS MAX_MAND_VERSION,
+		                                 CLIENT_TYPE
+		                          FROM   DWTTEMP.KPI_MBL_BI_M_VERSION
+		                          WHERE  UPDATE_TYPE = '1'
+		                          GROUP  BY CLIENT_TYPE) V2
+		                      ON V.CLIENT_TYPE = V2.CLIENT_TYPE
+		        WHERE  V.CLIENT_TYPE = 'ANDROID'
+		        ORDER  BY V.VERSION DESC) A
+		UNION
+		SELECT VERSION,
+		       CLIENT_TYPE,
+		       CHANGE_LOG,
+		       UPDATE_URL,
+		       MAX_MAND_VERSION,
+		       UPDATE_TYPE
+		FROM   (SELECT TOP 1 V3.VERSION,
+		                     V3.CLIENT_TYPE,
+		                     V3.CHANGE_LOG,
+		                     V3.UPDATE_URL,
+		                     V5.MAX_MAND_VERSION,
+		                     V3.UPDATE_TYPE
+		        FROM   DWTTEMP.KPI_MBL_BI_M_VERSION V3
+		               LEFT JOIN (SELECT Max(VERSION) AS MAX_MAND_VERSION,
+		                                 CLIENT_TYPE
+		                          FROM   DWTTEMP.KPI_MBL_BI_M_VERSION
+		                          WHERE  UPDATE_TYPE = '1'
+		                          GROUP  BY CLIENT_TYPE) V5
+		                      ON V3.CLIENT_TYPE = V5.CLIENT_TYPE
+		        WHERE  V3.CLIENT_TYPE = 'IOS'
+		        ORDER  BY V3.VERSION DESC) B
+
+	</select>
+    <update id="updateUserPassword">
+        UPDATE DWPPARA.DSSLOGON SET PASSWD = #{PASSWORD} WHERE MSISDN=#{USER_NAME}
+    </update>
+</mapper>

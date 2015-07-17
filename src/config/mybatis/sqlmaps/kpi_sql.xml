@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="KPI">
+    <select id="selectAllKpiset" resultType="LowerCaseMap">
+		SELECT
+			KPI_SET_ID,
+			KPI_SET_NAME,
+			KPI_SET_ICON,
+			KPI_SET_COLOR
+		FROM
+			${dbName}.KPI_MBL_BI_M_SET
+		WHERE TAG = #{TAG} 
+		ORDER BY
+			KPI_SET_INDEX
+	</select>
+
+    <select id="selectKpisetById" resultType="LowerCaseMap">
+		SELECT
+			KPI_SET_ID,
+			KPI_SET_NAME,
+			KPI_SET_ICON,
+			KPI_SET_COLOR
+		FROM
+			${dbName}.KPI_MBL_BI_M_SET
+		WHERE 
+			KPI_SET_ID = #{KPI_SET_ID}
+		ORDER BY
+			KPI_SET_INDEX
+	</select>
+
+    <select id="selectKpisAllSet" resultType="UpperCaseMap">
+		SELECT	
+			S.KPI_SET_ID,
+			S.KPI_SET_NAME,
+			S.KPI_SET_INDEX,
+			S.KPI_SET_ICON,
+			S.KPI_SET_COLOR,
+			D.KPI_NO,
+			D.KPI_NAME,
+			R.KPI_INDEX
+ 		FROM 
+ 			${dbName}.KPI_MBL_BI_M_SET S,
+ 			${dbName}.KPI_MBL_BI_M_SET_RELA R,
+ 			${dbName}.KPI_MBL_BI_DEFINE D
+ 		WHERE S.TAG = #{TAG}
+ 			AND S.KPI_SET_ID = R.KPI_SET_ID
+ 			AND  D.KPI_NO = R.KPI_NO
+ 		ORDER BY
+ 			KPI_SET_INDEX,
+ 			KPI_INDEX
+	</select>
+
+    <select id="selectKpisBySet" resultType="LowerCaseMap">
+		SELECT
+			D.KPI_NO,
+			D.KPI_NAME,
+			R.KPI_INDEX
+ 		FROM
+ 			(SELECT KPI_NO,KPI_INDEX FROM ${dbName}.KPI_MBL_BI_M_SET_RELA WHERE KPI_SET_ID = #{KPI_SET_ID}) R
+ 		INNER JOIN
+ 			${dbName}.KPI_MBL_BI_DEFINE D
+ 		ON
+ 			D.KPI_NO = R.KPI_NO
+ 		ORDER BY
+ 			KPI_INDEX
+	</select>
+
+    <select id="selectKpiById" resultType="LowerCaseMap">
+		SELECT
+			D.KPI_NO,
+			D.KPI_NAME
+ 		FROM
+ 			${dbName}.KPI_MBL_BI_DEFINE D
+ 		WHERE D.KPI_NO = #{KPI_NO}
+	</select>
+
+    <select id="selectAllChartType" resultType="UpperCaseMap">
+        SELECT
+          E.KPI_NO,
+          E.KPI_BELONGING,
+          T.CHART_TYPE_ID,
+          T.CHART_TYPE_CODE,
+          T.XML_TEMPLATE
+        FROM
+          ${dbName}.KPI_MBL_BI_DEFINE_EXTEND E
+        LEFT JOIN
+          ${dbName}.KPI_MBL_BI_CHART_TYPE T
+        ON
+          E.CHART_TYPE_ID = T.CHART_TYPE_ID
+
+    </select>
+
+    <insert id="insertUserCollection">
+        INSERT INTO ${dbName}.KPI_COLLECTION_LIST (USER_ID, KPI_NO, COLLECTIONG_TIME) VALUES (#{USER_ID}, #{KPI_NO}, #{COLLECTION_TIME})
+    </insert>
+    <delete id="delUserCollection">
+        DELETE FROM ${dbName}.KPI_COLLECTION_LIST WHERE USER_ID = #{USER_ID} AND KPI_NO = #{KPI_NO}
+    </delete>
+    <delete id="delUserAllCollection">
+        DELETE FROM ${dbName}.KPI_COLLECTION_LIST WHERE USER_ID = #{USER_ID}
+    </delete>
+
+</mapper>

@@ -1,0 +1,43 @@
+.button {
+    display: inline-block;
+    zoom: 1; /* zoom and *display = ie7 hack for display:inline-block */
+    *display: inline;
+    vertical-align: baseline;
+    margin: 0px;
+    outline: none;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font: 11px/100% Arial, Helvetica, sans-serif;
+    text-shadow: 0 1px 1px rgba(0,0,0,.3);
+    padding: 0.35em 1em 0.25em;
+    color: #606060;
+    border: solid 1px #b7b7b7;
+    background: #fff;
+}
+.text {
+    color: #606060;
+    text-shadow: 0 1px 1px rgba(0,0,0,.3);
+}
+.box{
+    position:relative;
+    float:left;
+}
+input.uploadFile{
+    position:absolute;
+    right:0px;
+    top:0px;
+    opacity:0;
+    overflow: hidden;
+    width:50px;
+}
+input.textbox{
+    float:left;
+    padding:5px;
+    color:#999;
+    height:21px;
+    line-height:0px;
+    border:1px #ccc solid;
+    width:300px;
+    margin-right:4px;
+}

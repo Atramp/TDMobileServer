@@ -1,0 +1,295 @@
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+        version="3.0">
+
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+    <context-param>
+        <param-name>log4jConfigLocation</param-name>
+        <param-value>/config/log4j.properties</param-value>
+    </context-param>
+
+    <!--身份验证过滤器-->
+    <filter>
+        <filter-name>authorFilter</filter-name>
+        <filter-class>com.teradata.servlet.filter.AuthorFilter</filter-class>
+        <init-param>
+            <param-name>suppressStackTrace</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>authorFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!--编码过滤器-->
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>com.teradata.servlet.filter.EncodingFilter</filter-class>
+        <init-param>
+            <param-name>suppressStackTrace</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!--按月类servlet缓存filter-->
+    <filter>
+        <filter-name>servletCacheFilter</filter-name>
+        <filter-class>com.teradata.servlet.filter.ServletCacheFilter</filter-class>
+        <init-param>
+            <param-name>suppressStackTrace</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>cacheName</param-name>
+            <param-value>SERVLET</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>servletCacheFilter</filter-name>
+        <url-pattern>/servlet/KpiValuesDataServlet</url-pattern>
+        <url-pattern>/servlet/ProvinceDataServlet</url-pattern>
+        <url-pattern>/servlet/KpiTrendDataServlet</url-pattern>
+        <url-pattern>/servlet/KpiValuesChartServlet</url-pattern>
+        <url-pattern>/servlet/KpiDetailChartServlet</url-pattern>
+        <url-pattern>/servlet/KpiDataMapshowServlet</url-pattern>
+    </filter-mapping>
+
+    <!--按日类servlet缓存filter-->
+    <filter>
+        <filter-name>servletDailyCacheFilter</filter-name>
+        <filter-class>com.teradata.servlet.filter.ServletCacheFilter</filter-class>
+        <init-param>
+            <param-name>suppressStackTrace</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>cacheName</param-name>
+            <param-value>SERVLET_DAILY</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>servletDailyCacheFilter</filter-name>
+        <url-pattern>/servlet/KpiValuesDataDayServlet</url-pattern>
+        <url-pattern>/servlet/KpiValuesChartByDayServlet</url-pattern>
+    </filter-mapping>
+
+
+    <servlet>
+        <servlet-name>cleanCacheServlet</servlet-name>
+        <servlet-class>com.teradata.servlet.application.CleanCacheServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>cleanCacheServlet</servlet-name>
+        <url-pattern>/servlet/cleanCacheServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>VersionServlet</servlet-name>
+        <servlet-class>com.teradata.servlet.application.VersionServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VersionServlet</servlet-name>
+        <url-pattern>/servlet/VersionServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>PictureReplacementServlet</servlet-name>
+        <servlet-class>com.teradata.servlet.application.PictureReplacementServlet
+        </servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PictureReplacementServlet</servlet-name>
+        <url-pattern>/servlet/PictureReplacementServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>PasswordOperationServlet</servlet-name>
+        <servlet-class>com.teradata.servlet.application.PasswordServlet
+        </servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PasswordOperationServlet</servlet-name>
+        <url-pattern>/servlet/PasswordOperationServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>KpiLogInsertServlet</servlet-name>
+        <servlet-class>com.teradata.servlet.application.AppLogServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>KpiLogInsertServlet</servlet-name>
+        <url-pattern>/servlet/KpiLogInsertServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>loginServlet</servlet-name>
+        <servlet-class>com.teradata.servlet.application.UserServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>loginServlet</servlet-name>
+        <url-pattern>/servlet/loginServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SMSServlet</servlet-name>
+        <servlet-class>com.teradata.servlet.application.SMSServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SMSServlet</servlet-name>
+        <url-pattern>/servlet/SMSServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>KpiCollectionUpadataServlet</servlet-name>
+        <servlet-class>com.teradata.servlet.data.KpiCollectionServlet
+        </servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>KpiCollectionUpadataServlet</servlet-name>
+        <url-pattern>/servlet/KpiCollectionUpadataServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ProvinceDataServlet</servlet-name>
+        <servlet-class>com.teradata.servlet.data.ProvinceDataServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProvinceDataServlet</servlet-name>
+        <url-pattern>/servlet/ProvinceDataServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>KpiTrendDataServlet</servlet-name>
+        <servlet-class>com.teradata.servlet.chart.KpiTrendChartServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>KpiTrendDataServlet</servlet-name>
+        <url-pattern>/servlet/KpiTrendDataServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>KpiValuesDataServlet</servlet-name>
+        <servlet-class>com.teradata.servlet.data.KpiValuesDataServlet
+        </servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>KpiValuesDataServlet</servlet-name>
+        <url-pattern>/servlet/KpiValuesDataServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>KpiDataMapshowServlet</servlet-name>
+        <servlet-class>com.teradata.servlet.chart.KpiMapChartServlet
+        </servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>KpiDataMapshowServlet</servlet-name>
+        <url-pattern>/servlet/KpiDataMapshowServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>KpiValuesChartServlet</servlet-name>
+        <servlet-class>com.teradata.servlet.chart.KpiValuesChartServlet
+        </servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>KpiValuesChartServlet</servlet-name>
+        <url-pattern>/servlet/KpiValuesChartServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>KpiValuesByUserServlet</servlet-name>
+        <servlet-class>com.teradata.servlet.data.KpiValuesByUserServlet
+        </servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>KpiValuesByUserServlet</servlet-name>
+        <url-pattern>/servlet/KpiValuesByUserServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>KpiValuesDataDayServlet</servlet-name>
+        <servlet-class>com.teradata.servlet.data.KpiValuesDailyServlet
+        </servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>KpiValuesDataDayServlet</servlet-name>
+        <url-pattern>/servlet/KpiValuesDataDayServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>KpiValuesChartByDayServlet</servlet-name>
+        <servlet-class>com.teradata.servlet.chart.KpiDailyChartServlet
+        </servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>KpiValuesChartByDayServlet</servlet-name>
+        <url-pattern>/servlet/KpiValuesChartByDayServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>KpiMaxDayServlet</servlet-name>
+        <servlet-class>com.teradata.servlet.data.KpiMaxDayServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>KpiMaxDayServlet</servlet-name>
+        <url-pattern>/servlet/KpiMaxDayServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>KpiMaxMonthServlet</servlet-name>
+        <servlet-class>com.teradata.servlet.data.KpiMaxMonthServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>KpiMaxMonthServlet</servlet-name>
+        <url-pattern>/servlet/KpiMaxMonthServlet</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>KpiSetServlet</servlet-name>
+        <servlet-class>com.teradata.servlet.data.KpiSetServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>KpiSetServlet</servlet-name>
+        <url-pattern>/servlet/KpiSetServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>KpiServlet</servlet-name>
+        <servlet-class>com.teradata.servlet.data.KpiServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>KpiServlet</servlet-name>
+        <url-pattern>/servlet/KpiServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>KpiDetailChartServlet</servlet-name>
+        <servlet-class>com.teradata.servlet.chart.KpiDetailChartServlet
+        </servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>KpiDetailChartServlet</servlet-name>
+        <url-pattern>/servlet/KpiDetailChartServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>commentServlet</servlet-name>
+        <servlet-class>com.teradata.servlet.data.CommentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>commentServlet</servlet-name>
+        <url-pattern>/servlet/commentServlet</url-pattern>
+    </servlet-mapping>
+</web-app>

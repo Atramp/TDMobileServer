@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <base href="<%=basePath%>">
+
+    <title>掌上经分管理系统</title>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript">
+        function redirectToLogin() {
+            var token = document.getElementById("token").value;
+            location.href = 'servlet/Login4TestServlet?token=' + token;
+        }
+        function copyFileName(obj) {
+            var fileNames = "";
+            for (var i = 0; i < obj.files.length; i++) {
+                fileNames += obj.files[i].name + ";"
+            }
+            document.getElementById("copyFile").value = fileNames;
+        }
+        $(document).ready(function () {
+            $("#btn-4").click(function () {
+                var curMonth = "";
+                $.ajax({
+                    url: "servlet/KpiMaxMonthServlet", success: function (response) {
+                        curMonth = response;
+                    }, async: false
+                });
+                var date = new Date();
+                var month = "";
+                var _month = date.getMonth();
+                if (_month == 0) {
+                    month = date.getFullYear() - 1 + "12";
+                } else {
+                    if (_month < 10) {
+                        _month = "0" + _month;
+                    }
+                    month = date.getFullYear() + "" + _month;
+                }
+                if (confirm("当前月份为[" + curMonth + "]是否更新为[" + month + "]？"))
+                    $.ajax({
+                        url: "servlet/KpiMaxMonthServlet?month=" + month, success: function (_response) {
+                            alert("已更新为[" + _response + "]");
+                        }
+                    });
+            });
+        });
+    </script>
+</head>
+
+<body>
+<div>
+    <div>
+        <button class="button" onclick="javascript:document.getElementById('uploadDiv').style.display='block';">图片上传
+        </button>
+        &nbsp;&nbsp;
+        <button class="button" onclick="location.href = 'jsp/ehcache.jsp'">缓存管理</button>
+        &nbsp;&nbsp;
+        <button class="button" onclick="location.href = 'servlet/pushBindServlet'">百度推送绑定列表</button>
+        &nbsp;&nbsp;
+        <button class="button" id="btn-4">月指标到达</button>
+        <br/>
+        <br/>
+    </div>
+    <div id="uploadDiv" style="display: none;">
+        <form action="servlet/PictureReplacementServlet" method="post" enctype="multipart/form-data">
+            <div class="box">
+                <input type="text" class="textbox" id="copyFile" readonly="readonly"/>
+                <input type="file" class="uploadFile" multiple name="upload" onchange="copyFileName(this)"/>
+                <a href="javascript:void(0);" class="button">浏览</a><br/><br/>
+                <input class="button" type="submit" value="上传" onclick="return confirm('上传图片将清除已有图片，确定上传？');"/>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
