@@ -1,10 +1,9 @@
-*class
-
+.DS_Store
+WebRoot/WEB-INF/classes
 # Package Files #
-*.jar
 *.war
 *.ear
 
 # IDE Files#
-.DS_Store
 .idea
+*.iml
