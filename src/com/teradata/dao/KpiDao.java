@@ -71,7 +71,7 @@ public class KpiDao extends AbstractCommonDao {
     }
 
     /**
-     * 获取全部kpiset
+     * 获取全部kpiSet
      */
     public List<Map> getKpisAllSet(String tag) {
         List<Map> list = (List<Map>) getFromCache("KPI.selectKpisAllSet");
@@ -85,7 +85,7 @@ public class KpiDao extends AbstractCommonDao {
     }
 
     /**
-     * 获取全部kpiset
+     * 获取set的所有kpi
      */
     public List<Map> getKpisBySet(String kpiSetId) {
         if (!paramCheck(kpiSetId)) {
